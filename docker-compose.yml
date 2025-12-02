@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    volumes:
+      - ./data/sessions:/app/data/sessions:ro
+      - ./data/tasks.jsonl:/app/data/tasks.jsonl:ro
+    expose:
+      - "8000"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "22025:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
